@@ -1,12 +1,12 @@
 import React, { useRef } from "react";
 import { Carousel } from "antd";
-import banner1 from "../img/banner1.jpg";
-import banner2 from "../img/banner2.jpg";
-import banner3 from "../img/banner3.jpg";
-import banner4 from "../img/banner4.jpg";
-import banner5 from "../img/banner5.jpg";
-import banner6 from "../img/banner6.jpg";
-import banner7 from "../img/banner7.jpg";
+import banner1 from "../assets/img/banner1.jpg";
+import banner2 from "../assets/img/banner2.jpg";
+import banner3 from "../assets/img/banner3.jpg";
+import banner4 from "../assets/img/banner4.jpg";
+import banner5 from "../assets/img/banner5.jpg";
+import banner6 from "../assets/img/banner6.jpg";
+import banner7 from "../assets/img/banner7.jpg";
 import { LeftOutlined, RightOutlined } from "@ant-design/icons";
 
 function MainBanner() {

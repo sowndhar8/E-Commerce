@@ -1,9 +1,9 @@
 import React, { useRef } from "react";
 import { Carousel } from "antd";
-import washing from "../img/washing.png";
-import fridge from "../img/fridge.png";
-import tv from "../img/tv.png";
-import ac from "../img/ac.png";
+import washing from "../assets/img/washing.png";
+import fridge from "../assets/img/fridge.png";
+import tv from "../assets/img/tv.png";
+import ac from "../assets/img/ac.png";
 import { LeftOutlined, RightOutlined } from "@ant-design/icons";
 
 function TopDeals() {

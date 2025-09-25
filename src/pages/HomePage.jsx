@@ -1,8 +1,8 @@
 import React from "react";
-import CategoryList from "../assets/components/CategoryList";
-import MainBanner from "../assets/components/mainBanner";
-import TopDeals from "../assets/components/TopDeals";
-import ThreeBanner from "../assets/components/ThreeBanner";
+import CategoryList from "../components/CategoryList";
+import MainBanner from "../components/mainBanner";
+import TopDeals from "../components/TopDeals";
+import ThreeBanner from "../components/ThreeBanner";
 
 function HomePage() {
   return (

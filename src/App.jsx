@@ -1,7 +1,7 @@
 import './App.css'
 import { RouterProvider , createBrowserRouter, Outlet } from 'react-router-dom'
-import NavBar from './assets/components/NavBar'
-import Footer from './assets/components/Footer'
+import NavBar from './components/NavBar'
+import Footer from './components/Footer'
 import HomePage from './pages/HomePage'
 import LoginPage from './pages/LoginPage.jsx'
 import Register from './pages/RegisterPage.jsx'
@@ -38,14 +38,14 @@ import Checkout from './pages/CheckoutPage'
           path: "/checkout",
           element: <Checkout />,
         },
-        {
-          path: "/login",
-          element: <LoginPage />,
-        },
-        {
-          path: "/register",
-          element: <Register />,
-        },
+        // {
+        //   path: "/login",
+        //   element: <LoginPage />,
+        // },
+        // {
+        //   path: "/register",
+        //   element: <Register />,
+        // },
         {
           path: "/wishlist",
           element: <Wishlist />,

@@ -1,8 +1,7 @@
 import React from 'react'
-import banner1 from "../img/banner1.jpg";
-import banner2 from "../img/banner2.jpg";
-import banner3 from "../img/banner3.jpg";
-import { link } from 'motion/react-client';
+import banner1 from "../assets/img/banner1.jpg";
+import banner2 from "../assets/img/banner2.jpg";
+import banner3 from "../assets/img/banner3.jpg";
 
 function ThreeBanner() {
 

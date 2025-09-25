@@ -1,8 +1,8 @@
 import React from "react";
-import mobile from "../img/mobile.png";
-import laptop from "../img/laptops.png";
-import applicance from "../img/applicance.png";
-import fashion from "../img/fashion.png";
+import mobile from "../assets/img/mobile.png";
+import laptop from "../assets/img/laptops.png";
+import applicance from "../assets/img/applicance.png";
+import fashion from "../assets/img/fashion.png";
 
 const categories = [
   {
