@@ -27,7 +27,7 @@ function MainBanner() {
       <div className="rounded-2xl overflow-hidden">
         <Carousel
           ref={carouselRef}
-          autoplay={{ dotDuration: true }}
+          autoplay = {{dotDuration: true}}
           autoplaySpeed={5000}
           draggable
           pauseOnDotsHover
@@ -37,7 +37,7 @@ function MainBanner() {
               <img
                 src={item.img}
                 alt={`banner-${item.id}`}
-                className="w-full h-[350px] object-cover"
+                className="w-full h-[200px] sm:h-[300px] md:h-[350px] lg:h-[400px] object-cover"
               />
             </div>
           ))}
@@ -45,22 +45,18 @@ function MainBanner() {
       </div>
 
       {/* Custom arrows overlay */}
-      <div className="absolute top-0 left-0 w-full h-full flex justify-between items-center ">
+      <div className="absolute top-0 left-0 w-full h-full flex justify-between items-center">
         <div
-          className="flex bg-white h-20 w-10 rounded-r-xl cursor-pointer items-center justify-center"
-          onClick={() => {
-            carouselRef.current.prev();
-          }}
+          className="flex bg-white h-12 sm:h-16 w-8 sm:w-10 rounded-r-xl cursor-pointer items-center justify-center shadow-md"
+          onClick={() => carouselRef.current.prev()}
         >
-          <LeftOutlined className="text-black text-xl" />
+          <LeftOutlined className="text-black text-lg sm:text-xl" />
         </div>
         <div
-          className="flex bg-white h-20 w-10 rounded-l-xl cursor-pointer items-center justify-center"
-          onClick={() => {
-            carouselRef.current.next();
-          }}
+          className="flex bg-white h-12 sm:h-16 w-8 sm:w-10 rounded-l-xl cursor-pointer items-center justify-center shadow-md"
+          onClick={() => carouselRef.current.next()}
         >
-          <RightOutlined className="text-black text-xl" />
+          <RightOutlined className="text-black text-lg sm:text-xl" />
         </div>
       </div>
     </div>

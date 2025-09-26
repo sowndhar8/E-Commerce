@@ -6,7 +6,7 @@ import ThreeBanner from "../components/ThreeBanner";
 
 function HomePage() {
   return (
-    <div className=" px-40 py-5 bg-gray-100 space-y-3">
+    <div className=" lg:px-40 md:px-16 px-4 py-5 bg-gray-100 space-y-3">
       {/* Top Category List */}
       <div>
         <CategoryList />

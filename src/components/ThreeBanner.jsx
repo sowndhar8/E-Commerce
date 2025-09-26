@@ -19,7 +19,7 @@ function ThreeBanner() {
                     <img
                         src={item.img}
                         alt={`banner-${item.id}`}
-                        className="w-full h-[250px] object-cover"
+                        className="w-full lg:h-[250px] md:h-[200px] h-[150px] object-cover"
                     />
                     </a>
                     

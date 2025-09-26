@@ -52,7 +52,8 @@ const SignUpPage = () => {
   // Google signup
   const handleGoogle = async () => {
     try {
-      await signInWithPopup(auth, googleProvider);
+      const result = await signInWithPopup(auth, googleProvider);
+      console.log(result);
       message.success("Signed up with Google!");
     } catch (error) {
       message.error(error.message);
@@ -62,8 +63,9 @@ const SignUpPage = () => {
   // Facebook signup
   const handleFacebook = async () => {
     try {
-      await signInWithPopup(auth, facebookProvider);
+      const result = await signInWithPopup(auth, facebookProvider);
       message.success("Signed up with Facebook!");
+      console.log(result);
     } catch (error) {
       message.error(error.message);
     }
@@ -109,7 +111,7 @@ const SignUpPage = () => {
 
   return (
     <div className=" flex items-center justify-center ">
-      <div className="bg-white w-[400px] rounded-xl shadow-lg p-6">
+      <div className=" p-6">
         <h2 className="text-2xl font-bold text-center mb-6">
           Create an Account
         </h2>
@@ -128,98 +130,99 @@ const SignUpPage = () => {
           {({ isSubmitting }) => (
             <Form className=" ">
               <div className="flex flex-col gap-6">
-              {/* Mobile */}
-              <div className="relative">
-                <Field
-                  type="text"
-                  name="phone"
-                  className="peer w-full bg-[#F6F6F6] focus:bg-white border-0 text-gray-900 rounded-md !px-3 !py-3 focus:outline-none focus:ring-2 focus:ring-[#2C48A2]"
-                  placeholder=" "
-                />
-                <label className="absolute left-3 !px-1 text-gray-500 text-md transition-all bg-[#F6F6F6] peer-placeholder-shown:top-3 peer-placeholder-shown:text-md peer-focus:-top-3 peer-focus:text-sm peer-focus:text-[#2C48A2] peer-focus:bg-white peer-not-placeholder-shown:-top-3 peer-not-placeholder-shown:text-sm peer-not-placeholder-shown:bg-white z-10">
-                  Mobile Number
-                </label>
-                <ErrorMessage
-                  name="phone"
-                  component="div"
-                  className="text-red-500 text-xs mt-1"
-                />
-              </div>
+                {/* Mobile */}
+                <div className="relative">
+                  <Field
+                    name="phone"
+                    className="peer w-full bg-[#F6F6F6] focus:bg-white border-0 text-gray-900 rounded-md !px-3 !py-3 focus:outline-none focus:ring-2 focus:ring-[#2C48A2]"
+                    placeholder=" "
+                  />
+                  <label className="absolute left-3 !px-1 text-gray-500 text-md transition-all bg-[#F6F6F6] peer-placeholder-shown:top-3 peer-placeholder-shown:text-md peer-focus:-top-3 peer-focus:text-sm peer-focus:text-[#2C48A2] peer-focus:bg-white peer-not-placeholder-shown:-top-3 peer-not-placeholder-shown:text-sm peer-not-placeholder-shown:bg-white z-10">
+                    Mobile Number
+                  </label>
+                  <ErrorMessage
+                    name="phone"
+                    component="div"
+                    className="text-red-500 text-xs mt-1"
+                  />
+                </div>
 
-              {/* Email */}
-              <div className="relative">
-                <Field
-                  type="email"
-                  name="email"
-                  className="peer w-full bg-[#F6F6F6] focus:bg-white border-0 text-gray-900 rounded-md !px-3 !py-3 focus:outline-none focus:ring-2 focus:ring-[#2C48A2]"
-                  placeholder=" "
-                />
-                <label className="absolute left-3 !px-1 text-gray-500 text-md transition-all bg-[#F6F6F6] peer-placeholder-shown:top-3 peer-placeholder-shown:text-md peer-focus:-top-3 peer-focus:text-sm peer-focus:text-[#2C48A2] peer-focus:bg-white peer-not-placeholder-shown:-top-3 peer-not-placeholder-shown:text-sm peer-not-placeholder-shown:bg-white z-10">
-                  Email
-                </label>
-                <ErrorMessage
-                  name="email"
-                  component="div"
-                  className="text-red-500 text-xs mt-1"
-                />
-              </div>
+                {/* Email */}
+                <div className="relative">
+                  <Field
+                    type="email"
+                    name="email"
+                    className="peer w-full bg-[#F6F6F6] focus:bg-white border-0 text-gray-900 rounded-md !px-3 !py-3 focus:outline-none focus:ring-2 focus:ring-[#2C48A2]"
+                    placeholder=" "
+                  />
+                  <label className="absolute left-3 !px-1 text-gray-500 text-md transition-all bg-[#F6F6F6] peer-placeholder-shown:top-3 peer-placeholder-shown:text-md peer-focus:-top-3 peer-focus:text-sm peer-focus:text-[#2C48A2] peer-focus:bg-white peer-not-placeholder-shown:-top-3 peer-not-placeholder-shown:text-sm peer-not-placeholder-shown:bg-white z-10">
+                    Email
+                  </label>
+                  <ErrorMessage
+                    name="email"
+                    component="div"
+                    className="text-red-500 text-xs mt-1"
+                  />
+                </div>
 
-              {/* Password */}
-              <div className="relative">
-                <Field
-                  type={showPassword ? "text" : "password"}
-                  name="password"
-                  placeholder=" "
-                  className="peer w-full bg-[#F6F6F6] focus:bg-white border-0 text-gray-900 rounded-md !px-3 !py-3 focus:outline-none focus:ring-2 focus:ring-[#2C48A2] pr-10"
-                />
-                <label className="absolute left-3 !px-1 text-gray-500 text-md transition-all bg-[#F6F6F6] peer-placeholder-shown:top-3 peer-placeholder-shown:text-md peer-focus:-top-3 peer-focus:text-sm peer-focus:text-[#2C48A2] peer-focus:bg-white peer-not-placeholder-shown:-top-3 peer-not-placeholder-shown:text-sm peer-not-placeholder-shown:bg-white z-10">
-                  Password
-                </label>
-                <span
-                  className="absolute right-3 top-3 cursor-pointer text-gray-600"
-                  onClick={() => setShowPassword((prev) => !prev)}
+                {/* Password */}
+                <div className="relative">
+                  <Field
+                    type={showPassword ? "text" : "password"}
+                    name="password"
+                    placeholder=" "
+                    autocomplete="password"
+                    className="peer w-full bg-[#F6F6F6] focus:bg-white border-0 text-gray-900 rounded-md !px-3 !py-3 focus:outline-none focus:ring-2 focus:ring-[#2C48A2] pr-10"
+                  />
+                  <label className="absolute left-3 !px-1 text-gray-500 text-md transition-all bg-[#F6F6F6] peer-placeholder-shown:top-3 peer-placeholder-shown:text-md peer-focus:-top-3 peer-focus:text-sm peer-focus:text-[#2C48A2] peer-focus:bg-white peer-not-placeholder-shown:-top-3 peer-not-placeholder-shown:text-sm peer-not-placeholder-shown:bg-white z-10">
+                    Password
+                  </label>
+                  <span
+                    className="absolute right-3 top-3 cursor-pointer text-gray-600"
+                    onClick={() => setShowPassword((prev) => !prev)}
+                  >
+                    {showPassword ? <HiEyeOff /> : <HiEye />}
+                  </span>
+                  <ErrorMessage
+                    name="password"
+                    component="div"
+                    className="text-red-500 text-xs mt-1"
+                  />
+                </div>
+
+                {/* Confirm Password */}
+                <div className="relative">
+                  <Field
+                    type={showConfirm ? "text" : "password"}
+                    name="confirmPassword"
+                    placeholder=" "
+                    autocomplete="password"
+                    className="peer w-full bg-[#F6F6F6] focus:bg-white border-0 text-gray-900 rounded-md !px-3 !py-3 focus:outline-none focus:ring-2 focus:ring-[#2C48A2] pr-10"
+                  />
+                  <label className="absolute left-3 !px-1 text-gray-500 text-md transition-all bg-[#F6F6F6] peer-placeholder-shown:top-3 peer-placeholder-shown:text-md peer-focus:-top-3 peer-focus:text-sm peer-focus:text-[#2C48A2] peer-focus:bg-white peer-not-placeholder-shown:-top-3 peer-not-placeholder-shown:text-sm peer-not-placeholder-shown:bg-white z-10">
+                    Confirm Password
+                  </label>
+                  <span
+                    className="absolute right-3 top-3 cursor-pointer text-gray-600"
+                    onClick={() => setShowConfirm((prev) => !prev)}
+                  >
+                    {showConfirm ? <HiEyeOff /> : <HiEye />}
+                  </span>
+                  <ErrorMessage
+                    name="confirmPassword"
+                    component="div"
+                    className="text-red-500 text-xs mt-1"
+                  />
+                </div>
+
+                <button
+                  type="submit"
+                  disabled={isSubmitting || loading}
+                  className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition disabled:opacity-50"
                 >
-                  {showPassword ? <HiEyeOff /> : <HiEye />}
-                </span>
-                <ErrorMessage
-                  name="password"
-                  component="div"
-                  className="text-red-500 text-xs mt-1"
-                />
+                  {loading ? "Signing Up..." : "Sign Up"}
+                </button>
               </div>
-
-              {/* Confirm Password */}
-              <div className="relative">
-                <Field
-                  type={showConfirm ? "text" : "password"}
-                  name="confirmPassword"
-                  placeholder=" "
-                  className="peer w-full bg-[#F6F6F6] focus:bg-white border-0 text-gray-900 rounded-md !px-3 !py-3 focus:outline-none focus:ring-2 focus:ring-[#2C48A2] pr-10"
-                />
-                <label className="absolute left-3 !px-1 text-gray-500 text-md transition-all bg-[#F6F6F6] peer-placeholder-shown:top-3 peer-placeholder-shown:text-md peer-focus:-top-3 peer-focus:text-sm peer-focus:text-[#2C48A2] peer-focus:bg-white peer-not-placeholder-shown:-top-3 peer-not-placeholder-shown:text-sm peer-not-placeholder-shown:bg-white z-10">
-                  Confirm Password
-                </label>
-                <span
-                  className="absolute right-3 top-3 cursor-pointer text-gray-600"
-                  onClick={() => setShowConfirm((prev) => !prev)}
-                >
-                  {showConfirm ? <HiEyeOff /> : <HiEye />}
-                </span>
-                <ErrorMessage
-                  name="confirmPassword"
-                  component="div"
-                  className="text-red-500 text-xs mt-1"
-                />
-              </div>
-
-              <button
-                type="submit"
-                disabled={isSubmitting || loading}
-                className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition disabled:opacity-50"
-              >
-                {loading ? "Signing Up..." : "Sign Up"}
-              </button>
-            </div>
             </Form>
           )}
         </Formik>
@@ -244,8 +247,6 @@ const SignUpPage = () => {
         >
           Continue with Facebook
         </button>
-
-       
       </div>
     </div>
   );
