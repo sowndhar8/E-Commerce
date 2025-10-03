@@ -1,9 +1,11 @@
 @import "tailwindcss";
 
 @media (min-width: 1024px) {
+  
   .scrollbar-hide-lg::-webkit-scrollbar {
     display: none;
   }
+ 
   .scrollbar-hide-lg {
     -ms-overflow-style: none; /* IE and Edge */
     scrollbar-width: none; /* Firefox */

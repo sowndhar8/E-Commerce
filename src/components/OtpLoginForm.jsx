@@ -2,6 +2,13 @@ import React, { useState } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import { Input, message } from "antd";
 import * as Yup from "yup";
+import {
+  getAuth,
+  RecaptchaVerifier,
+  signInWithPhoneNumber,
+} from "firebase/auth";
+
+
 
 const OtpSchema = Yup.object().shape({
   phone: Yup.string().when("isOtpSent", {

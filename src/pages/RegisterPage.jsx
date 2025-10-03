@@ -11,6 +11,8 @@ import {
 import { createUserWithEmailAndPassword, signInWithPopup } from "firebase/auth";
 import { message } from "antd";
 import { HiEye, HiEyeOff } from "react-icons/hi";
+import { toast, ToastContainer } from "react-toastify";
+
 
 const SignUpSchema = Yup.object().shape({
   email: Yup.string().email("Invalid email").required("Email is required"),
@@ -42,9 +44,10 @@ const SignUpPage = () => {
     setLoading(true);
     try {
       await createUserWithEmailAndPassword(auth, values.email, values.password);
-      message.success("Account created successfully!");
+      toast.success("Account created successfully!");
+      setTimeout(() => window.location.href = "/", 300);
     } catch (error) {
-      message.error(error.message);
+      toast.error(error.message);
     }
     setLoading(false);
   };
@@ -53,10 +56,11 @@ const SignUpPage = () => {
   const handleGoogle = async () => {
     try {
       const result = await signInWithPopup(auth, googleProvider);
-      console.log(result);
-      message.success("Signed up with Google!");
+      console.log(result.user.displayName);
+      toast.success("Signed up with Google!" + result.user.displayName);
+      setTimeout(() => window.location.href = "/", 300);
     } catch (error) {
-      message.error(error.message);
+      toast.error(error.message);
     }
   };
 
@@ -64,21 +68,13 @@ const SignUpPage = () => {
   const handleFacebook = async () => {
     try {
       const result = await signInWithPopup(auth, facebookProvider);
-      message.success("Signed up with Facebook!");
-      console.log(result);
+      toast.success("Signed up with Facebook!");
+      console.log(result.email);
     } catch (error) {
-      message.error(error.message);
+      toast.error(error.message);
     }
   };
 
-  // Phone OTP setup
-  const setupRecaptcha = () => {
-    window.recaptchaVerifier = new RecaptchaVerifier(
-      "recaptcha-container",
-      { size: "invisible" },
-      auth
-    );
-  };
 
   const sendOtp = async () => {
     if (!phone || phone.trim() === "") {
@@ -91,7 +87,7 @@ const SignUpPage = () => {
         (confirmationResult) => {
           window.confirmationResult = confirmationResult;
           setOtpSent(true);
-          message.success("OTP sent!");
+          toast.success("OTP sent!");
         }
       );
     } catch (error) {
@@ -103,15 +99,16 @@ const SignUpPage = () => {
     if (!otp) return message.error("Enter OTP");
     try {
       await window.confirmationResult.confirm(otp);
-      message.success("Phone verified & account created!");
+      toast.success("Phone verified & account created!");
     } catch (error) {
-      message.error(error.message);
+      toast.error(error.message);
     }
   };
 
   return (
     <div className=" flex items-center justify-center ">
-      <div className=" p-6">
+      <div className=" w-full p-6">
+        <ToastContainer />
         <h2 className="text-2xl font-bold text-center mb-6">
           Create an Account
         </h2>

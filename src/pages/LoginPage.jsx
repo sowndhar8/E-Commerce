@@ -1,13 +1,16 @@
 import React, { useState } from "react";
-import { message } from "antd";
 import { auth, googleProvider, facebookProvider } from "../config/FireBase";
 import { signInWithPopup, signInWithEmailAndPassword } from "firebase/auth";
 
 import EmailLoginForm from "../components/EmailLoginForm";
 import OtpLoginForm from "../components/OtpLoginform";
 import SocialLoginButtons from "../components/SocialLoginButtons";
+import { toast, ToastContainer } from "react-toastify";
+import { useNavigate } from "react-router-dom";
+import fetchdata from "../config/fetchdata";
 
 const LoginPage = () => {
+  const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [activeTab, setActiveTab] = useState("email");
 
@@ -15,10 +18,20 @@ const LoginPage = () => {
   const handleEmailLogin = async (values) => {
     setLoading(true);
     try {
-      await signInWithEmailAndPassword(auth, values.email, values.password);
-      message.success("Logged in successfully!");
+      console.log("Login successful!", values);
+      const payload = { email: values?.email, password: values?.password };
+      const Loginuser = await fetchdata?.Login(payload);
+      console.log("Loginuser", Loginuser);
+      if (Loginuser?.success == true) {
+        localStorage.setItem("ACCESS_TOKEN", Loginuser?.token);
+        localStorage.setItem("USER_DATA", JSON.stringify(Loginuser?.user));
+        setTimeout(() => (window.location.href = "/"), 300);
+        toast.success("Logged in successfully!");
+      } else {
+        toast.error(Loginuser?.message);
+      }
     } catch (error) {
-      message.error(error.message);
+      toast.error(error.message);
     }
     setLoading(false);
   };
@@ -27,9 +40,11 @@ const LoginPage = () => {
   const handleGoogle = async () => {
     try {
       await signInWithPopup(auth, googleProvider);
-      message.success("Logged in with Google!");
+      toast.success("Logged in with Google!");
+      console.log(auth.currentUser.displayName);
+      setTimeout(() => (window.location.href = "/"), 300);
     } catch (error) {
-      message.error(error.message);
+      toast.error(error.message);
     }
   };
 
@@ -37,9 +52,11 @@ const LoginPage = () => {
   const handleFacebook = async () => {
     try {
       await signInWithPopup(auth, facebookProvider);
-      message.success("Logged in with Facebook!");
+      toast.success("Logged in with Facebook!");
+      console.log(auth.currentUser.displayName);
+      setTimeout(() => (window.location.href = "/"), 300);
     } catch (error) {
-      message.error(error.message);
+      toast.error(error.message);
     }
   };
 
@@ -57,6 +74,7 @@ const LoginPage = () => {
           <OtpLoginForm />
         )}
 
+        <ToastContainer position="top-right" autoClose={3000} />
         {/* Divider */}
         <div className="flex items-center my-4">
           <hr className="flex-1 border-gray-300" />

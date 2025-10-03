@@ -27,8 +27,9 @@ function MainBanner() {
       <div className="rounded-2xl overflow-hidden">
         <Carousel
           ref={carouselRef}
-          autoplay = {{dotDuration: true}}
+          autoplay
           autoplaySpeed={5000}
+          speed={1000}
           draggable
           pauseOnDotsHover
         >
