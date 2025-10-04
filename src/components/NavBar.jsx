@@ -10,6 +10,8 @@ import { onAuthStateChanged, signOut } from "firebase/auth";
 
 import LoginPage from "../pages/LoginPage";
 import SignUpPage from "../pages/RegisterPage";
+import { data } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const userMenu = (handleLogout) => [
   {
@@ -25,8 +27,18 @@ const userMenu = (handleLogout) => [
     key: "2",
     label: (
       <div className="flex items-center gap-2 py-1">
-        <svg className="w-4 h-4 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+        <svg
+          className="w-4 h-4 text-gray-600"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"
+          />
         </svg>
         <span>Orders</span>
       </div>
@@ -42,14 +54,24 @@ const userMenu = (handleLogout) => [
     ),
   },
   {
-    type: 'divider',
+    type: "divider",
   },
   {
     key: "4",
     label: (
       <div className="flex items-center gap-2 py-1 text-red-600">
-        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+        <svg
+          className="w-4 h-4"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"
+          />
         </svg>
         <span className="font-medium">Logout</span>
       </div>
@@ -63,16 +85,25 @@ function NavBar() {
   const [authType, setAuthType] = useState("login");
   const [menuOpen, setMenuOpen] = useState(false);
   const [currentUser, setCurrentUser] = useState(null);
+  const userData = JSON.parse(localStorage.getItem("USER_DATA"));
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
-      setCurrentUser(user);
+      setCurrentUser(userData);
     });
     return () => unsubscribe();
   }, []);
 
   const handleLogout = async () => {
-    await signOut(auth);
+    try {
+      await signOut(auth);
+      localStorage.removeItem("USER_DATA");
+      localStorage.removeItem("ACCESS_TOKEN");
+      setCurrentUser(null);
+      console.log("User logged out successfully!");
+    } catch (error) {
+      console.error("Logout failed:", error);
+    }
   };
 
   return (
@@ -80,8 +111,12 @@ function NavBar() {
       {/* Navbar */}
       <div className="flex justify-between items-center px-4 md:px-16 lg:px-40 py-4">
         <a href="/">
-        <img src={logo} alt="logo" className="w-24 md:w-32 h-fit cursor-pointer" />
-</a>
+          <img
+            src={logo}
+            alt="logo"
+            className="w-24 md:w-32 h-fit cursor-pointer"
+          />
+        </a>
         {/* Desktop Menu */}
         <div className="hidden md:flex gap-8 items-center">
           {currentUser ? (
@@ -93,10 +128,12 @@ function NavBar() {
             >
               <button className="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-gray-50 transition-all duration-200 border border-transparent hover:border-gray-200">
                 <div className="w-8 h-8 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center text-white text-sm font-medium">
-                  {currentUser.displayName ? currentUser.displayName.charAt().toUpperCase() : "U"}
+                  {currentUser.firstname
+                    ? currentUser.firstname.charAt().toUpperCase()
+                    : "U"}
                 </div>
                 <span className="text-gray-700 font-medium">
-                  {currentUser.displayName || "User"}
+                  {currentUser?.firstname}
                 </span>
                 <FaChevronDown className="text-gray-400 text-xs" />
               </button>
@@ -124,17 +161,20 @@ function NavBar() {
             </>
           )}
 
-          <a href="/cart" className="flex items-center gap-2 text-gray-700 hover:text-green-600 transition-colors duration-200 relative group">
+          <a
+            href="/cart"
+            className="flex items-center gap-2 text-gray-700 hover:text-green-600 transition-colors duration-200 relative group"
+          >
             <div className="p-2 rounded-lg group-hover:bg-green-50 transition-colors relative">
               <BsCart3 size={18} className="absolute text-gray-500 " />
-              <Badge 
-                count={2} 
+              <Badge
+                count={2}
                 size="small"
                 className="relative -top-3 left-3  "
-                style={{ backgroundColor: '#10b981' }}
-                />
-                </div>
-              <span className="font-medium">Cart</span>
+                style={{ backgroundColor: "#10b981" }}
+              />
+            </div>
+            <span className="font-medium">Cart</span>
           </a>
         </div>
 
@@ -154,10 +194,14 @@ function NavBar() {
             <div className="pb-3 border-b border-gray-100">
               <div className="flex items-center gap-3 px-3 py-2">
                 <div className="w-10 h-10 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center text-white font-medium">
-                  {currentUser.displayName ? currentUser.displayName.charAt(0).toUpperCase() : "U"}
+                  {currentUser.firstname
+                    ? currentUser.firstname.charAt(0).toUpperCase()
+                    : "U"}
                 </div>
                 <div>
-                  <p className="font-semibold text-gray-900">{currentUser.displayName || "User"}</p>
+                  <p className="font-semibold text-gray-900">
+                    {currentUser.firstname || "User"}
+                  </p>
                   <p className="text-sm text-gray-500">{currentUser.email}</p>
                 </div>
               </div>
@@ -172,8 +216,18 @@ function NavBar() {
                   <span>My Profile</span>
                 </button>
                 <button className="w-full flex items-center gap-3 px-3 py-3 rounded-lg hover:bg-gray-50 text-gray-700 transition-colors">
-                  <svg className="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+                  <svg
+                    className="w-5 h-5 text-gray-500"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"
+                    />
                   </svg>
                   <span>Orders</span>
                 </button>
@@ -212,27 +266,36 @@ function NavBar() {
               className="flex items-center gap-3 px-3 py-3 rounded-lg hover:bg-gray-50 text-gray-700 transition-colors relative"
               onClick={() => setMenuOpen(false)}
             >
-        
               <BsCart3 className="absolute text-gray-500 " />
-              <Badge 
-                count={2} 
-                size="small" 
+              <Badge
+                count={2}
+                size="small"
                 className="relative -top-2 left-3 z-10  "
-                style={{ backgroundColor: '#10b981' }}
-                />
+                style={{ backgroundColor: "#10b981" }}
+              />
               <span className="px-1">Cart</span>
             </a>
 
             {currentUser && (
-              <button 
+              <button
                 onClick={() => {
                   handleLogout();
                   setMenuOpen(false);
                 }}
                 className="w-full flex items-center gap-3 px-3 py-3 rounded-lg hover:bg-red-50 text-red-600 transition-colors mt-3 border-t border-gray-100 pt-3"
               >
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                <svg
+                  className="w-5 h-5"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"
+                  />
                 </svg>
                 <span className="font-medium">Logout</span>
               </button>

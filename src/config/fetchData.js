@@ -1,3 +1,4 @@
+import axios from "axios";
 import { api } from "./api";
 
 // const api_name = 'api/';
@@ -5,11 +6,11 @@ import { api } from "./api";
 const AccessToken = async () => {
   try {
     const value = localStorage.getItem("ACCESS_TOKEN");
-    console.log("ACCESS_TOKEN", value);
+    // console.log("ACCESS_TOKEN", value);
 
-    console.log("value", value);
+    // console.log("value", value);
 
-    console.log("access token", value);
+    // console.log("access token", value);
     if (value !== null) {
       return value;
     }
@@ -28,6 +29,11 @@ export default {
     console.log("Enter the new fun", data);
     let url = "auth/user/register";
     return api.postMethod(url, data);
+  },
+
+  RegisterOrLoginGoogle: async (payload) => {
+    let url = "users/google-login"; // All on one line
+    return api.postMethod(url, payload);
   },
   GetSingleuser: async (id) => {
     let url = `users/${id}`;

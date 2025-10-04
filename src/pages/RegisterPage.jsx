@@ -8,7 +8,7 @@ import {
   RecaptchaVerifier,
   signInWithPhoneNumber,
 } from "../config/FireBase";
-import { createUserWithEmailAndPassword, signInWithPopup } from "firebase/auth";
+import {  signInWithPopup } from "firebase/auth";
 import { message } from "antd";
 import { HiEye, HiEyeOff } from "react-icons/hi";
 import { toast, ToastContainer } from "react-toastify";
