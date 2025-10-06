@@ -39,7 +39,12 @@ export default {
     let url = `users/${id}`;
     const accessToken = await AccessToken();
     console.log("accessToken", accessToken);
-
+    return api.getMethod(url, accessToken);
+  },
+  GetUserAddress: async (id) => {
+    let url = `/users/address/${id}`;
+    const accessToken = await AccessToken();
+    console.log("accessToken", accessToken);
     return api.getMethod(url, accessToken);
   },
 };

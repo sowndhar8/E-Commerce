@@ -8,6 +8,7 @@ import fetchdata from "../config/fetchdata";
 function HomePage() {
   useEffect(() => {
     getUser();
+    
   }, []);
   const getUser = async () => {
     try {

@@ -17,16 +17,16 @@ const userMenu = (handleLogout) => [
   {
     key: "1",
     label: (
-      <div className="flex items-center gap-2 py-1">
+      <a href="/profile" className="flex items-center gap-2 py-1">
         <CgProfile className="text-gray-600" />
         <span>My Profile</span>
-      </div>
+      </a>
     ),
   },
   {
     key: "2",
     label: (
-      <div className="flex items-center gap-2 py-1">
+      <a href="/orders" className="flex items-center gap-2 py-1">
         <svg
           className="w-4 h-4 text-gray-600"
           fill="none"
@@ -41,16 +41,16 @@ const userMenu = (handleLogout) => [
           />
         </svg>
         <span>Orders</span>
-      </div>
+      </a>
     ),
   },
   {
     key: "3",
     label: (
-      <div className="flex items-center gap-2 py-1">
+      <a href="/wishlist" className="flex items-center gap-2 py-1">
         <FaHeart className="text-red-500" />
         <span>Wishlist</span>
-      </div>
+      </a>
     ),
   },
   {
@@ -211,11 +211,11 @@ function NavBar() {
           <div className="space-y-1">
             {currentUser ? (
               <>
-                <button className="w-full flex items-center gap-3 px-3 py-3 rounded-lg hover:bg-gray-50 text-gray-700 transition-colors">
+                <a href="/profile" className="w-full flex items-center gap-3 px-3 py-3 rounded-lg hover:bg-gray-50 text-gray-700 transition-colors">
                   <CgProfile className="text-gray-500" />
                   <span>My Profile</span>
-                </button>
-                <button className="w-full flex items-center gap-3 px-3 py-3 rounded-lg hover:bg-gray-50 text-gray-700 transition-colors">
+                </a>
+                <a href="/orders" className="w-full flex items-center gap-3 px-3 py-3 rounded-lg hover:bg-gray-50 text-gray-700 transition-colors">
                   <svg
                     className="w-5 h-5 text-gray-500"
                     fill="none"
@@ -230,11 +230,11 @@ function NavBar() {
                     />
                   </svg>
                   <span>Orders</span>
-                </button>
-                <button className="w-full flex items-center gap-3 px-3 py-3 rounded-lg hover:bg-gray-50 text-gray-700 transition-colors">
+                </a>
+                <a href="/wishlist" className="w-full flex items-center gap-3 px-3 py-3 rounded-lg hover:bg-gray-50 text-gray-700 transition-colors">
                   <FaHeart className="text-red-500" />
                   <span>Wishlist</span>
-                </button>
+                </a>
               </>
             ) : (
               <>
