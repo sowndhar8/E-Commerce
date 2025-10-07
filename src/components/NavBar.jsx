@@ -101,8 +101,10 @@ function NavBar() {
       localStorage.removeItem("ACCESS_TOKEN");
       setCurrentUser(null);
       console.log("User logged out successfully!");
+      window.location.href = "/";
+      toast.success("Logged out successfully!");
     } catch (error) {
-      console.error("Logout failed:", error);
+      toast.error("Logout failed:", error);
     }
   };
 
@@ -211,11 +213,17 @@ function NavBar() {
           <div className="space-y-1">
             {currentUser ? (
               <>
-                <a href="/profile" className="w-full flex items-center gap-3 px-3 py-3 rounded-lg hover:bg-gray-50 text-gray-700 transition-colors">
+                <a
+                  href="/profile"
+                  className="w-full flex items-center gap-3 px-3 py-3 rounded-lg hover:bg-gray-50 text-gray-700 transition-colors"
+                >
                   <CgProfile className="text-gray-500" />
                   <span>My Profile</span>
                 </a>
-                <a href="/orders" className="w-full flex items-center gap-3 px-3 py-3 rounded-lg hover:bg-gray-50 text-gray-700 transition-colors">
+                <a
+                  href="/orders"
+                  className="w-full flex items-center gap-3 px-3 py-3 rounded-lg hover:bg-gray-50 text-gray-700 transition-colors"
+                >
                   <svg
                     className="w-5 h-5 text-gray-500"
                     fill="none"
@@ -231,7 +239,10 @@ function NavBar() {
                   </svg>
                   <span>Orders</span>
                 </a>
-                <a href="/wishlist" className="w-full flex items-center gap-3 px-3 py-3 rounded-lg hover:bg-gray-50 text-gray-700 transition-colors">
+                <a
+                  href="/wishlist"
+                  className="w-full flex items-center gap-3 px-3 py-3 rounded-lg hover:bg-gray-50 text-gray-700 transition-colors"
+                >
                   <FaHeart className="text-red-500" />
                   <span>Wishlist</span>
                 </a>

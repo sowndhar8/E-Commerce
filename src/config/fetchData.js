@@ -59,4 +59,12 @@ export default {
     console.log("accessToken", accessToken);
     return api.putMethod(url, updatedData, accessToken);
   },
+  // User Login OTP_Verify API
+  User_Login_OTP_Verify: async (data, accessToken) => {
+    console.log(accessToken, '0000');
+    console.log('Enter the new fun', data);
+    let url = 'auth/user/verify';
+    // const accessToken = await AccessToken();
+    return api.postMethod(url, data, accessToken);
+  },
 };

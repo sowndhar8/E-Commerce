@@ -7,10 +7,12 @@ import { Tabs, Spin } from "antd";
 import fetchdata from "../config/fetchdata";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import VerifyOtpModal from "./VerifyOtpModal";
 
 function ProfilePage() {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [showOtpModal, setShowOtpModal] = useState(false);
 
   useEffect(() => {
     getUserProfile();
@@ -23,6 +25,7 @@ function ProfilePage() {
       if (!fetchedUser) return;
 
       const parsedUser = JSON.parse(fetchedUser);
+      console.log("parsedUser", parsedUser);
       const userId = parsedUser?.userid;
 
       const addressResponse = await fetchdata?.GetUserAddress(userId);
@@ -53,7 +56,7 @@ function ProfilePage() {
         addressid: workAddress.addressid || "",
       };
 
-      setUser({
+      const userData = {
         userid: parsedUser.userid,
         name: parsedUser.firstname || "",
         email: parsedUser.email || "",
@@ -62,13 +65,21 @@ function ProfilePage() {
         phoneVerified: parsedUser.ismobilenumberverify || false,
         homeAddress: formattedHome,
         workAddress: formattedWork,
-      });
+      };
+
+      setUser(userData);
+
+      if (!parsedUser.ismobilenumberverify) {
+        setShowOtpModal(true);
+      }
+
     } catch (error) {
       console.error("Error fetching user or address:", error);
       toast.error("❌ Failed to load profile!");
     } finally {
       setLoading(false);
     }
+
   };
 
   // Update user profile and addresses
@@ -80,9 +91,9 @@ function ProfilePage() {
       const userId = values.userid;
       console.log("userId", userId);
       if (!userId) {
-      alert("User ID not found!");
-      return;
-    }
+        alert("User ID not found!");
+        return;
+      }
 
       // 1️⃣ Update personal info
       const personalData = {
@@ -91,12 +102,15 @@ function ProfilePage() {
         mobilenumber: values.phone,
       };
       // await fetchdata.UpdateUser(userId, personalData);
-       const updatedUser = await fetchdata.UpdateUser(userId, personalData);
+      const updatedUser = await fetchdata.UpdateUser(userId, personalData);
 
-    // Update local state & storage
-    setUser((prev) => ({ ...prev, ...personalData }));
-    const localUser = JSON.parse(localStorage.getItem("USER_DATA")) || {};
-    localStorage.setItem("USER_DATA", JSON.stringify({ ...localUser, ...personalData }));
+      // Update local state & storage
+      setUser((prev) => ({ ...prev, ...personalData }));
+      const localUser = JSON.parse(localStorage.getItem("USER_DATA")) || {};
+      localStorage.setItem(
+        "USER_DATA",
+        JSON.stringify({ ...localUser, ...personalData })
+      );
 
       // 2️⃣ Update Home Address
       if (user?.homeAddress?.addressid) {
@@ -276,13 +290,38 @@ function ProfilePage() {
                                 title="Verified"
                               />
                             ) : (
-                              <LuBadgeX
-                                className="text-red-500"
-                                size={18}
-                                title="Not Verified"
-                              />
+                              (
+                                <LuBadgeX
+                                  className="text-red-500"
+                                  size={18}
+                                  title="Not Verified"
+                                />
+                              ) 
+                              
                             )}
                           </div>
+                              <button onClick={() => setShowOtpModal(true)}>verify</button>
+                            <VerifyOtpModal
+                              visible={showOtpModal}
+                              onClose={() => setShowOtpModal(false)}
+                              phone={user?.phone}
+                              onVerified={() => {
+                                  setUser((prev) => ({
+                                      ...prev,
+                                      phoneVerified: true,
+                                    }));
+                                    const localUser = JSON.parse(
+                                        localStorage.getItem("USER_DATA")
+                                      );
+                                      localStorage.setItem(
+                                          "USER_DATA",
+                                          JSON.stringify({
+                                              ...localUser,
+                                              phoneVerified: true,
+                                            })
+                                          );
+                                        }}
+                              />
                           <ErrorMessage
                             name="phone"
                             component="div"

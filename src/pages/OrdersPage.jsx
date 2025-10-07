@@ -6,25 +6,25 @@ function OrdersPage() {
   useEffect(() => {
     // Replace this with your API call to fetch orders
     const fetchedOrders = [
-    //   {
-    //     id: "ORD123456",
-    //     date: "2025-10-06",
-    //     status: "Delivered",
-    //     items: [
-    //       { id: 1, name: "Washing Machine", quantity: 1, price: 15000 },
-    //       { id: 2, name: "Air Conditioner", quantity: 1, price: 25000 },
-    //     ],
-    //     total: 40000,
-    //   },
-    //   {
-    //     id: "ORD123457",
-    //     date: "2025-09-30",
-    //     status: "Shipped",
-    //     items: [
-    //       { id: 3, name: "Smart TV", quantity: 1, price: 45000 },
-    //     ],
-    //     total: 45000,
-    //   },
+      {
+        id: "ORD123456",
+        date: "2025-10-06",
+        status: "Delivered",
+        items: [
+          { id: 1, name: "Washing Machine", quantity: 1, price: 15000 },
+          { id: 2, name: "Air Conditioner", quantity: 1, price: 25000 },
+        ],
+        total: 40000,
+      },
+      {
+        id: "ORD123457",
+        date: "2025-09-30",
+        status: "Shipped",
+        items: [
+          { id: 3, name: "Smart TV", quantity: 1, price: 45000 },
+        ],
+        total: 45000,
+      },
     ];
     setOrders(fetchedOrders);
   }, []);
