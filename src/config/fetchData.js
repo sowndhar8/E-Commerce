@@ -42,9 +42,15 @@ export default {
     return api.getMethod(url, accessToken);
   },
   GetUserAddress: async (id) => {
-    let url = `/users/address/${id}`;
+    let url = `address/${id}`;
     const accessToken = await AccessToken();
     console.log("accessToken", accessToken);
     return api.getMethod(url, accessToken);
+  },
+  UpdateAddress: async (id) => {
+    let url = `address/${userid}/${addressid}`;
+    const accessToken = await AccessToken();
+    console.log("accessToken", accessToken);
+    return api.putMethod(url, updatedData, accessToken);
   },
 };

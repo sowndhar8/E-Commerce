@@ -9,7 +9,7 @@ export const api = {
     };
   },
   // GET Method
-  getMethod: (url, accessToken) => {
+  getMethod: async (url, accessToken) => {
     const headers = {
       ...api.header(),
     };
@@ -30,7 +30,7 @@ export const api = {
   },
 
   // POST Method
-  postMethod: (url, data, accessToken) => {
+  postMethod: async (url, data, accessToken) => {
     const headers = {
       ...api.header(),
     };
@@ -52,28 +52,54 @@ export const api = {
       .catch((err) => Promise.resolve(err));
   },
   // PUT Method
-  putMethod: (url, data, accessToken) => {
+  putMethod: async (url, data, accessToken) => {
     const headers = {
       ...api.header(),
     };
     if (accessToken) {
       headers.Authorization = `Bearer ${accessToken}`;
     }
-    return fetch(baseUrl + url, {
-      method: "PUT",
-      headers: headers,
-      body: JSON.stringify(data),
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        if (data) {
-          return data;
-        }
-      })
-      .catch((err) => Promise.reject(err));
+    if (accessToken) {
+      headers.Authorization = `Bearer ${accessToken}`;
+    }
+
+    try {
+      const response = await fetch(baseUrl + url, {
+        method: "PUT",
+        headers,
+        body: JSON.stringify(data),
+      });
+
+      // Optional: Check for HTTP errors (e.g. 401, 404)
+      if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(
+          `HTTP ${response.status}: ${response.statusText} - ${errorText}`
+        );
+      }
+
+      const result = await response.json();
+      return result;
+    } catch (err) {
+      console.error("PUT request failed:", err);
+      throw err;
+    }
   },
+  //   return fetch(baseUrl + url, {
+  //     method: "PUT",
+  //     headers: headers,
+  //     body: JSON.stringify(data),
+  //   })
+  //     .then((res) => res.json())
+  //     .then((data) => {
+  //       if (data) {
+  //         return data;
+  //       }
+  //     })
+  //     .catch((err) => Promise.reject(err));
+  // },
   // PUT Method in NOTIFICATION
-  putMethodNotification: (url, accessToken) => {
+  putMethodNotification: async (url, accessToken) => {
     const headers = {
       ...api.header(),
     };
@@ -94,7 +120,7 @@ export const api = {
   },
 
   // DELETE Method
-  deleteMethod: (url, accessToken) => {
+  deleteMethod: async (url, accessToken) => {
     const headers = {
       ...api.header(),
     };

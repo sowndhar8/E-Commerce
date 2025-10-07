@@ -29,7 +29,7 @@ const EmailLoginForm = ({ onSubmit, loading }) => {
               autoComplete="email"
               className="peer w-full bg-[#F6F6F6] focus:bg-white border-0 text-gray-900  rounded-md !px-3 !py-3 focus:outline-none focus:ring-2 focus:ring-[#2C48A2]"
             />
-            <label className="absolute left-3 !px-1 text-gray-500 text-md transition-all bg-[#F6F6F6] peer-placeholder-shown:top-3 peer-placeholder-shown:text-md  peer-focus:-top-3 peer-focus:text-sm peer-focus:text-[#2C48A2]  peer-focus:bg-white peer-not-placeholder-shown:-top-3  peer-not-placeholder-shown:text-sm peer-not-placeholder-shown:bg-white z-10">
+            <label className="absolute left-3 !px-1 text-gray-500 text-md transition-all bg-[#F6F6F6] peer-placeholder-shown:top-3 peer-placeholder-shown:text-md  peer-focus:-top-3 peer-focus:text-sm peer-focus:text-[#2C48A2]  peer-focus:bg-white peer-not-placeholder-shown:-top-3  peer-not-placeholder-shown:text-sm peer-not-placeholder-shown:bg-white z-10 pointer-events-none">
               Email
             </label>
             <ErrorMessage
@@ -54,7 +54,7 @@ const EmailLoginForm = ({ onSubmit, loading }) => {
                          bg-[#F6F6F6] peer-placeholder-shown:top-3 peer-placeholder-shown:text-md 
                          peer-focus:-top-3 peer-focus:text-sm peer-focus:text-[#2C48A2] 
                          peer-focus:bg-white peer-not-placeholder-shown:-top-3 
-                         peer-not-placeholder-shown:text-sm peer-not-placeholder-shown:bg-white z-10"
+                         peer-not-placeholder-shown:text-sm peer-not-placeholder-shown:bg-white z-10 pointer-events-none"
             >
               Password
             </label>

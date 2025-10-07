@@ -3,41 +3,85 @@ import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { Mail, Phone, Home, Briefcase } from "lucide-react";
 import { LuBadgeCheck, LuBadgeX } from "react-icons/lu";
-import { Tabs } from "antd";
+import { Tabs, Spin } from "antd";
+import fetchdata from "../config/fetchdata";
 
 function ProfilePage() {
   const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const fetchedUser = localStorage.getItem("USER_DATA");
-    if (fetchedUser) {
-      const parsedUser = JSON.parse(fetchedUser);
-      console.log(parsedUser);
-      setUser({
-        name: parsedUser.firstname || "",
-        email: parsedUser.email || "",
-        phone: parsedUser.mobilenumber || "",
-        emailVerified: parsedUser.isemailverify || false,
-        phoneVerified: parsedUser.ismobilenumberverify || false,
-        homeAddress: {
-          line1: "12/219",
-          line2: "Tiruppur",
-          city: "Erode",
-          state: "Tamil Nadu",
-          pincode: "643928",
-        },
-        workAddress: {
-          line1: "12/219",
-          line2: "Tiruppur",
-          city: "Erode",
-          state: "Tamil Nadu",
-          pincode: "643928",
-        },
-      });
-    }
+    getUserProfile();
   }, []);
 
-  if (!user) return <p>Loading...</p>;
+  const getUserProfile = async () => {
+  try {
+    const fetchedUser = localStorage.getItem("USER_DATA");
+    if (!fetchedUser) return;
+
+    const parsedUser = JSON.parse(fetchedUser);
+    const userId = parsedUser?.userid;
+    console.log("userId", userId);
+
+    // ✅ Fetch user addresses
+    const addressResponse = await fetchdata?.GetUserAddress(userId);
+    console.log("addressResponse", addressResponse);
+
+    // const updateAddress = await fetchdata?.UpdateAddress(userId);
+    // console.log("userResponse", updateAddress);
+
+    const addresses = addressResponse?.addresses || [];
+
+    // ✅ Separate home & work addresses based on type
+    const homeAddress = addresses.find(a => a.addresstype === "home") || {};
+    const workAddress = addresses.find(a => a.addresstype === "work") || {};
+
+    // ✅ Set default structure for safety
+    const formattedHome = {
+      line1: homeAddress.houseno || "",
+      line2: homeAddress.street || "",
+      city: homeAddress.city || "",
+      state: homeAddress.state || "",
+      pincode: homeAddress.pincode || "",
+      country: homeAddress.country || "",
+      phone: homeAddress.mobilenumber || "",
+    };
+
+    const formattedWork = {
+      line1: workAddress.houseno || "",
+      line2: workAddress.street || "",
+      city: workAddress.city || "",
+      state: workAddress.state || "",
+      pincode: workAddress.pincode || "",
+      country: workAddress.country || "",
+      phone: workAddress.mobilenumber || "",
+    };
+
+    // ✅ Update state
+    setUser({
+      name: parsedUser.firstname || "",
+      email: parsedUser.email || "",
+      phone: parsedUser.mobilenumber || "",
+      emailVerified: parsedUser.isemailverify || false,
+      phoneVerified: parsedUser.ismobilenumberverify || false,
+      homeAddress: formattedHome,
+      workAddress: formattedWork,
+    });
+  } catch (error) {
+    console.error("Error fetching user or address:", error);
+  } finally {
+    setLoading(false);
+  }
+};
+
+
+  if (loading)
+    return (
+      <div className="flex justify-center py-10">
+        <Spin size="large" />
+      </div>
+    );
+  if (!user) return <p>No user data found</p>;
 
   const validationSchema = Yup.object({
     name: Yup.string().required("Full name is required"),
@@ -51,6 +95,9 @@ function ProfilePage() {
       city: Yup.string().required("Required"),
       state: Yup.string().required("Required"),
       pincode: Yup.string().required("Required"),
+      phone: Yup.string()
+        .matches(/^\+?\d{10,14}$/, "Invalid phone number")
+        .required("Phone number is required"),
     }),
     workAddress: Yup.object({
       line1: Yup.string().required("Required"),
@@ -58,6 +105,9 @@ function ProfilePage() {
       city: Yup.string().required("Required"),
       state: Yup.string().required("Required"),
       pincode: Yup.string().required("Required"),
+      phone: Yup.string()
+        .matches(/^\+?\d{10,14}$/, "Invalid phone number")
+        .required("Phone number is required"),
     }),
   });
 
@@ -68,10 +118,10 @@ function ProfilePage() {
       <Formik
         initialValues={user}
         validationSchema={validationSchema}
+        enableReinitialize
         onSubmit={(values) => {
           console.log("Updated User:", values);
-          setUser(values);
-          alert("Profile updated successfully!");
+          // optionally send to backend here
         }}
       >
         {({ values }) => (
@@ -88,6 +138,7 @@ function ProfilePage() {
                         Personal Information
                       </h2>
                       <div className="flex flex-col md:w-1/3 gap-10">
+                        {/* Full Name */}
                         <div>
                           <label className="text-gray-500 text-sm">
                             Full Name
@@ -103,6 +154,7 @@ function ProfilePage() {
                           />
                         </div>
 
+                        {/* Email */}
                         <div>
                           <label className="text-gray-500 text-sm flex items-center gap-1">
                             <Mail size={16} /> Email
@@ -133,6 +185,7 @@ function ProfilePage() {
                           />
                         </div>
 
+                        {/* Phone */}
                         <div>
                           <label className="text-gray-500 text-sm flex items-center gap-1">
                             <Phone size={16} /> Mobile Number
@@ -174,8 +227,8 @@ function ProfilePage() {
                       <h2 className="text-xl font-semibold mb-3 flex items-center gap-2">
                         <Home className="text-blue-600" /> Home Address
                       </h2>
-                      <div className="grid md:grid-cols-2 gap-5">
-                        {["line1", "line2", "city", "state", "pincode"].map(
+                      <div className="grid md:grid-cols-3 gap-5 ">
+                        {["line1", "line2", "city", "state", "pincode", "phone"].map(
                           (field) => (
                             <div key={field}>
                               <label>
@@ -205,8 +258,8 @@ function ProfilePage() {
                       <h2 className="text-xl font-semibold mb-3 flex items-center gap-2">
                         <Briefcase className="text-blue-600" /> Work Address
                       </h2>
-                      <div className="grid md:grid-cols-2 gap-5">
-                        {["line1", "line2", "city", "state", "pincode"].map(
+                      <div className="grid md:grid-cols-3 gap-5">
+                        {["line1", "line2", "city", "state", "pincode", "phone"].map(
                           (field) => (
                             <div key={field}>
                               <label>
