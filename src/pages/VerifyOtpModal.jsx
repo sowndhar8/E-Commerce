@@ -9,7 +9,7 @@ function VerifyOtpModal({ visible, onClose, phone, onVerified }) {
   const handleSendOtp = async () => {
     try {
       setLoading(true);
-      const res = await fetchdata.SendOtp({ mobilenumber: phone });
+      const res = await fetchdata.sendOtp({ mobilenumber: phone });
       if (res.success) message.success("OTP sent successfully!");
     } catch (err) {
       message.error(err.message || "Failed to send OTP");

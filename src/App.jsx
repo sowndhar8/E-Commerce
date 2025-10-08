@@ -8,6 +8,8 @@ import CartList from "./pages/CartListPage";
 import Checkout from "./pages/CheckoutPage";
 import Profile from "./pages/ProfilePage";
 import Orders from "./pages/OrdersPage";
+import ProductListing from "./pages/ProductListing";
+import TrackOrderPage from "./pages/TrackOrderPage";
 
 function Layout() {
   return (
@@ -33,6 +35,11 @@ const router = createBrowserRouter([
         element: <CartList />,
       },
       {
+        path: "/productListing",
+        element: <ProductListing />,
+      },
+      
+      {
         path: "/checkout",
         element: <Checkout />,
       },
@@ -47,7 +54,11 @@ const router = createBrowserRouter([
       {
         path: "/orders",
         element: <Orders />,
-      }
+      },
+      {
+        path: "trackOrder",
+        element: <TrackOrderPage />,
+      },
     ],
   },
 ]);

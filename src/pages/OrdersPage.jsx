@@ -1,91 +1,120 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
+import { Package, ChevronRight } from "lucide-react";
+import { sampleOrders } from "../Datas/SampleData";
+import { useNavigate } from "react-router-dom";
 
 function OrdersPage() {
-  const [orders, setOrders] = useState([]);
+  const navigate = useNavigate();
 
-  useEffect(() => {
-    // Replace this with your API call to fetch orders
-    const fetchedOrders = [
-      {
-        id: "ORD123456",
-        date: "2025-10-06",
-        status: "Delivered",
-        items: [
-          { id: 1, name: "Washing Machine", quantity: 1, price: 15000 },
-          { id: 2, name: "Air Conditioner", quantity: 1, price: 25000 },
-        ],
-        total: 40000,
-      },
-      {
-        id: "ORD123457",
-        date: "2025-09-30",
-        status: "Shipped",
-        items: [
-          { id: 3, name: "Smart TV", quantity: 1, price: 45000 },
-        ],
-        total: 45000,
-      },
-    ];
-    setOrders(fetchedOrders);
-  }, []);
+  const handleTrackOrder = (order) => {
+    navigate('/trackOrder', { state: { order } });
+  };
 
   return (
-    <div className="min-h-screen bg-gray-100 py-10 px-5 md:px-20">
-      <h1 className="text-3xl font-semibold mb-6">My Orders</h1>
+    <div className="max-w-7xl mx-auto p-6">
+      <h1 className="text-3xl font-bold text-gray-900 mb-6">My Orders</h1>
 
-      {orders.length === 0 ? (
-        <div className="text-center py-20 bg-white rounded-lg shadow">
-          <p className="text-gray-600 text-lg">You have no orders yet 🫤</p>
-        </div>
-      ) : (
-        <div className="space-y-6">
-          {orders.map((order) => (
+      <div className="space-y-6">
+        {sampleOrders.length === 0 ? ( // Fixed: check sampleOrders.length instead of sampleOrders
+          <div className="text-center py-12">
+            <Package size={64} className="mx-auto text-gray-400 mb-4" />
+            <p className="text-xl text-gray-600 mb-4">No orders found</p>
+            <button
+              onClick={() => navigate("/")}
+              className="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors"
+            >
+              Shop Now
+            </button>
+          </div>
+        ) : (
+          sampleOrders.map((order) => (
             <div
               key={order.id}
-              className="bg-white rounded-xl shadow p-6 space-y-4"
+              className="bg-white rounded-xl shadow-md overflow-hidden"
             >
-              <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-2">
-                <p>
-                  <span className="font-semibold">Order ID:</span> {order.id}
-                </p>
-                <p>
-                  <span className="font-semibold">Date:</span> {order.date}
-                </p>
-                <p
-                  className={`font-semibold ${
-                    order.status === "Delivered"
-                      ? "text-green-600"
-                      : order.status === "Shipped"
-                      ? "text-blue-600"
-                      : "text-yellow-600"
-                  }`}
-                >
-                  {order.status}
-                </p>
+              <div className="bg-gray-50 p-4 border-b border-gray-200">
+                <div className="flex justify-between items-center">
+                  <div>
+                    <p className="text-sm text-gray-600">
+                      Order ID:{" "}
+                      <span className="font-medium text-gray-900">
+                        {order.id}
+                      </span>
+                    </p>
+                    <p className="text-sm text-gray-600">
+                      Placed on:{" "}
+                      {new Date(order.date).toLocaleDateString("en-IN", {
+                        year: "numeric",
+                        month: "long",
+                        day: "numeric",
+                      })}
+                    </p>
+                  </div>
+                  <div className="text-right">
+                    <p className="text-sm text-gray-600">Total Amount</p>
+                    <p className="text-xl font-bold text-gray-900">
+                      ₹{order.total.toLocaleString()}
+                    </p>
+                  </div>
+                </div>
               </div>
 
-              <div className="border-t pt-3">
-                <h3 className="font-semibold mb-2">Items:</h3>
-                <div className="space-y-2">
-                  {order.items.map((item) => (
-                    <div
-                      key={item.id}
-                      className="flex justify-between items-center"
+              <div className="p-4">
+                <div className="flex items-center justify-between mb-4">
+                  <div className="flex items-center gap-2">
+                    <Package
+                      className={
+                        order.status === "delivered"
+                          ? "text-green-600"
+                          : "text-blue-600"
+                      }
+                      size={24}
+                    />
+                    <span
+                      className={`font-medium ${
+                        order.status === "delivered"
+                          ? "text-green-600"
+                          : "text-blue-600"
+                      }`}
                     >
-                      <p>{item.name} (x{item.quantity})</p>
-                      <p>₹{item.price * item.quantity}</p>
+                      {order.status === "delivered" ? "Delivered" : "In Transit"}
+                    </span>
+                  </div>
+                  <button
+                    onClick={() => handleTrackOrder(order)}
+                    className="flex items-center gap-2 text-blue-600 hover:text-blue-700 font-medium"
+                  >
+                    Track Order <ChevronRight size={18} />
+                  </button>
+                </div>
+
+                <div className="space-y-3">
+                  {order.products.map((product) => (
+                    <div key={product.id} className="flex items-center gap-4">
+                      <img
+                        src={product.image}
+                        alt={product.name}
+                        className="w-16 h-16 object-cover rounded-lg"
+                      />
+                      <div className="flex-1">
+                        <p className="font-medium text-gray-900">
+                          {product.name}
+                        </p>
+                        <p className="text-sm text-gray-600">
+                          Qty: {product.quantity}
+                        </p>
+                      </div>
+                      <p className="font-bold text-gray-900">
+                        ₹{product.price.toLocaleString()}
+                      </p>
                     </div>
                   ))}
                 </div>
-                <div className="border-t mt-2 pt-2 flex justify-between font-semibold">
-                  <p>Total:</p>
-                  <p>₹{order.total}</p>
-                </div>
               </div>
             </div>
-          ))}
-        </div>
-      )}
+          ))
+        )}
+      </div>
     </div>
   );
 }

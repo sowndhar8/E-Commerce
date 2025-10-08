@@ -69,17 +69,15 @@ function ProfilePage() {
 
       setUser(userData);
 
-      if (!parsedUser.ismobilenumberverify) {
-        setShowOtpModal(true);
-      }
-
+      // if (!parsedUser.ismobilenumberverify) {
+      //   setShowOtpModal(true);
+      // }
     } catch (error) {
       console.error("Error fetching user or address:", error);
       toast.error("❌ Failed to load profile!");
     } finally {
       setLoading(false);
     }
-
   };
 
   // Update user profile and addresses
@@ -260,11 +258,47 @@ function ProfilePage() {
                                 title="Verified"
                               />
                             ) : (
-                              <LuBadgeX
-                                className="text-red-500"
-                                size={18}
-                                title="Not Verified"
-                              />
+                              <div className="flex items-center gap-2">
+                                <LuBadgeX
+                                  className="text-red-500"
+                                  size={18}
+                                  title="Not Verified"
+                                />
+                                <div className="flex items-center gap-2">
+                                  <button
+                                    onClick={() => setShowOtpModal(true)}
+                                    className=" text-blue-600 hover:text-white border border-blue-600 hover:bg-blue-700 rounded-md px-2 mt-3 py-2 font-semibold text-[16px]"
+                                  >
+                                    verify
+                                  </button>
+                                  <VerifyOtpModal
+                                    visible={showOtpModal}
+                                    onClose={() => setShowOtpModal(false)}
+                                    phone={user?.phone}
+                                    onVerified={() => {
+                                      setUser((prev) => ({
+                                        ...prev,
+                                        phoneVerified: true,
+                                      }));
+                                      const localUser = JSON.parse(
+                                        localStorage.getItem("USER_DATA")
+                                      );
+                                      localStorage.setItem(
+                                        "USER_DATA",
+                                        JSON.stringify({
+                                          ...localUser,
+                                          phoneVerified: true,
+                                        })
+                                      );
+                                    }}
+                                  />
+                                  <ErrorMessage
+                                    name="phone"
+                                    component="div"
+                                    className="text-red-500 text-sm"
+                                  />
+                                </div>
+                              </div>
                             )}
                           </div>
                           <ErrorMessage
@@ -290,43 +324,49 @@ function ProfilePage() {
                                 title="Verified"
                               />
                             ) : (
-                              (
+                              <div className="flex items-center gap-2">
                                 <LuBadgeX
                                   className="text-red-500"
                                   size={18}
                                   title="Not Verified"
                                 />
-                              ) 
-                              
-                            )}
-                          </div>
-                              <button onClick={() => setShowOtpModal(true)}>verify</button>
-                            <VerifyOtpModal
-                              visible={showOtpModal}
-                              onClose={() => setShowOtpModal(false)}
-                              phone={user?.phone}
-                              onVerified={() => {
-                                  setUser((prev) => ({
-                                      ...prev,
-                                      phoneVerified: true,
-                                    }));
-                                    const localUser = JSON.parse(
+                                <div className="flex items-center gap-2">
+                                  <button
+                                    onClick={() => setShowOtpModal(true)}
+                                    className=" text-blue-600 hover:text-white border border-blue-600 hover:bg-blue-700 rounded-md px-2 mt-3 py-2 font-semibold text-[16px]"
+                                  >
+                                    verify
+                                  </button>
+                                  <VerifyOtpModal
+                                    visible={showOtpModal}
+                                    onClose={() => setShowOtpModal(false)}
+                                    phone={user?.phone}
+                                    onVerified={() => {
+                                      setUser((prev) => ({
+                                        ...prev,
+                                        phoneVerified: true,
+                                      }));
+                                      const localUser = JSON.parse(
                                         localStorage.getItem("USER_DATA")
                                       );
                                       localStorage.setItem(
-                                          "USER_DATA",
-                                          JSON.stringify({
-                                              ...localUser,
-                                              phoneVerified: true,
-                                            })
-                                          );
-                                        }}
-                              />
-                          <ErrorMessage
-                            name="phone"
-                            component="div"
-                            className="text-red-500 text-sm"
-                          />
+                                        "USER_DATA",
+                                        JSON.stringify({
+                                          ...localUser,
+                                          phoneVerified: true,
+                                        })
+                                      );
+                                    }}
+                                  />
+                                  <ErrorMessage
+                                    name="phone"
+                                    component="div"
+                                    className="text-red-500 text-sm"
+                                  />
+                                </div>
+                              </div>
+                            )}
+                          </div>
                         </div>
                       </div>
                     </div>

@@ -23,10 +23,11 @@ function CategoryList() {
         {categories.map((item) => (
           <a
             key={item.id}
-            href="/login"
+            href="/productListing"
             className="flex-shrink-0 w-24 text-center"
           >
             <div>
+              {/* Image */}
               <img
                 src={item.img}
                 alt={item.label}

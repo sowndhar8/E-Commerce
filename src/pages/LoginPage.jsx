@@ -37,15 +37,69 @@ const LoginPage = () => {
   };
 
   // Google login
+  // Google login
   const handleGoogle = async () => {
+    setLoading(true);
     try {
-      await signInWithPopup(auth, googleProvider);
-      toast.success("Logged in with Google!");
-      console.log(auth.currentUser.displayName);
-      setTimeout(() => (window.location.href = "/"), 300);
+      // Step 1: Sign in with Google via Firebase
+      const result = await signInWithPopup(auth, googleProvider);
+      const user = result.user;
+      console.log("Firebase Google user:", user);
+
+      // Step 2: Prepare payload for backend
+      const payload = {
+        firstname: user.displayName?.split(" ")[0] || "",
+        lastname: user.displayName?.split(" ").slice(1).join(" ") || "",
+        email: user.email,
+        profileImage: user.photoURL || "",
+        authProvider: "google",
+        firebaseUid: user.uid,
+      };
+
+      // Step 3: Send user to your backend (register/login)
+      const registerResponse = await fetchdata?.RegisterOrLoginGoogle(payload);
+      console.log("Backend register/login response:", registerResponse);
+
+      // Step 4: Store token + user in localStorage
+      if (registerResponse?.success === true) {
+        console.log("✅ Login successful, storing data:", registerResponse.user);
+        
+        localStorage.setItem("ACCESS_TOKEN", registerResponse?.token);
+        localStorage.setItem(
+          "USER_DATA",
+          JSON.stringify(registerResponse?.user)
+        );
+        localStorage.setItem("USER_ID", registerResponse?.user?._id || registerResponse?.user?.userid);
+
+        toast.success("Logged in successfully!");
+        
+        // ✅ Close modal first
+        if (onSuccess) onSuccess();
+        
+        // ✅ Update NavBar directly using global function
+        if (window.updateNavBarUser) {
+          console.log("🔔 Calling updateNavBarUser");
+          window.updateNavBarUser();
+        }
+        
+        // ✅ Also dispatch event as backup
+        window.dispatchEvent(new Event('user-logged-in'));
+        
+      } else {
+        toast.error(registerResponse?.message || "Something went wrong");
+      }
     } catch (error) {
-      toast.error(error.message);
+      console.error("Google login error:", error);
+      
+      if (error.code === 'auth/popup-closed-by-user') {
+        toast.info("Login popup was closed");
+      } else if (error.message?.includes("Failed to fetch")) {
+        toast.error("Cannot connect to server. Please ensure backend is running.");
+      } else {
+        toast.error(error.message || "Login failed");
+      }
     }
+    setLoading(false);
   };
 
   // Facebook login
