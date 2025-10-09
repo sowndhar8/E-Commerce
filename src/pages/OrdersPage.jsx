@@ -7,77 +7,79 @@ function OrdersPage() {
   const navigate = useNavigate();
 
   const handleTrackOrder = (order) => {
-    navigate('/trackOrder', { state: { order } });
+    navigate("/trackOrder", { state: { order } });
   };
 
   return (
     <div className="max-w-7xl mx-auto p-6">
-      <h1 className="text-3xl font-bold text-gray-900 mb-6">My Orders</h1>
+      <h1 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-8">
+        My Orders
+      </h1>
 
-      <div className="space-y-6">
-        {sampleOrders.length === 0 ? ( // Fixed: check sampleOrders.length instead of sampleOrders
-          <div className="text-center py-12">
-            <Package size={64} className="mx-auto text-gray-400 mb-4" />
-            <p className="text-xl text-gray-600 mb-4">No orders found</p>
-            <button
-              onClick={() => navigate("/")}
-              className="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors"
-            >
-              Shop Now
-            </button>
-          </div>
-        ) : (
-          sampleOrders.map((order) => (
+      {sampleOrders.length === 0 ? (
+        <div className="text-center py-16 bg-white rounded-3xl shadow-lg">
+          <Package size={64} className="mx-auto text-gray-400 mb-4" />
+          <p className="text-xl text-gray-600 mb-6">No orders found</p>
+          <button
+            onClick={() => navigate("/")}
+            className="bg-blue-600 text-white px-6 py-3 rounded-2xl hover:bg-blue-700 transition-colors font-semibold"
+          >
+            Shop Now
+          </button>
+        </div>
+      ) : (
+        <div className="space-y-6">
+          {sampleOrders.map((order) => (
             <div
               key={order.id}
-              className="bg-white rounded-xl shadow-md overflow-hidden"
+              className="bg-white rounded-3xl shadow-lg overflow-hidden hover:shadow-2xl transition"
             >
-              <div className="bg-gray-50 p-4 border-b border-gray-200">
-                <div className="flex justify-between items-center">
-                  <div>
-                    <p className="text-sm text-gray-600">
-                      Order ID:{" "}
-                      <span className="font-medium text-gray-900">
-                        {order.id}
-                      </span>
-                    </p>
-                    <p className="text-sm text-gray-600">
-                      Placed on:{" "}
-                      {new Date(order.date).toLocaleDateString("en-IN", {
-                        year: "numeric",
-                        month: "long",
-                        day: "numeric",
-                      })}
-                    </p>
-                  </div>
-                  <div className="text-right">
-                    <p className="text-sm text-gray-600">Total Amount</p>
-                    <p className="text-xl font-bold text-gray-900">
-                      ₹{order.total.toLocaleString()}
-                    </p>
-                  </div>
+              {/* Order Header */}
+              <div className="bg-gray-50 p-6 border-b border-gray-200 flex flex-col sm:flex-row justify-between sm:items-center">
+                <div className="mb-4 sm:mb-0">
+                  <p className="text-sm text-gray-600">
+                    Order ID:{" "}
+                    <span className="font-medium text-gray-900">{order.id}</span>
+                  </p>
+                  <p className="text-sm text-gray-600">
+                    Placed on:{" "}
+                    {new Date(order.date).toLocaleDateString("en-IN", {
+                      year: "numeric",
+                      month: "long",
+                      day: "numeric",
+                    })}
+                  </p>
+                </div>
+                <div>
+                  <p className="text-sm text-gray-600">Total Amount</p>
+                  <p className="text-2xl sm:text-3xl font-bold text-gray-900">
+                    ₹{order.total.toLocaleString()}
+                  </p>
                 </div>
               </div>
 
-              <div className="p-4">
-                <div className="flex items-center justify-between mb-4">
-                  <div className="flex items-center gap-2">
+              {/* Order Products & Status */}
+              <div className="p-6">
+                <div className="flex items-center justify-between mb-6">
+                  <div className="flex items-center gap-3">
                     <Package
-                      className={
+                      className={`${
                         order.status === "delivered"
                           ? "text-green-600"
                           : "text-blue-600"
-                      }
-                      size={24}
+                      }`}
+                      size={28}
                     />
                     <span
-                      className={`font-medium ${
+                      className={`font-semibold text-lg ${
                         order.status === "delivered"
                           ? "text-green-600"
                           : "text-blue-600"
                       }`}
                     >
-                      {order.status === "delivered" ? "Delivered" : "In Transit"}
+                      {order.status === "delivered"
+                        ? "Delivered"
+                        : "In Transit"}
                     </span>
                   </div>
                   <button
@@ -88,23 +90,26 @@ function OrdersPage() {
                   </button>
                 </div>
 
-                <div className="space-y-3">
+                <div className="space-y-4">
                   {order.products.map((product) => (
-                    <div key={product.id} className="flex items-center gap-4">
+                    <div
+                      key={product.id}
+                      className="flex items-center gap-4 bg-gray-50 p-4 rounded-2xl shadow-sm hover:shadow-md transition"
+                    >
                       <img
                         src={product.image}
                         alt={product.name}
-                        className="w-16 h-16 object-cover rounded-lg"
+                        className="w-20 h-20 sm:w-24 sm:h-24 object-cover rounded-lg"
                       />
                       <div className="flex-1">
-                        <p className="font-medium text-gray-900">
+                        <p className="font-semibold text-gray-900">
                           {product.name}
                         </p>
                         <p className="text-sm text-gray-600">
                           Qty: {product.quantity}
                         </p>
                       </div>
-                      <p className="font-bold text-gray-900">
+                      <p className="font-bold text-gray-900 text-lg sm:text-xl">
                         ₹{product.price.toLocaleString()}
                       </p>
                     </div>
@@ -112,9 +117,9 @@ function OrdersPage() {
                 </div>
               </div>
             </div>
-          ))
-        )}
-      </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 }

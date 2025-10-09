@@ -10,6 +10,8 @@ import Profile from "./pages/ProfilePage";
 import Orders from "./pages/OrdersPage";
 import ProductListing from "./pages/ProductListing";
 import TrackOrderPage from "./pages/TrackOrderPage";
+import { CartProvider } from "./context/CartContext"; // ✅ Import
+import { WishlistProvider } from "./context/WishlistContext";
 
 function Layout() {
   return (
@@ -26,45 +28,27 @@ const router = createBrowserRouter([
     path: "/",
     element: <Layout />,
     children: [
-      {
-        path: "/",
-        element: <HomePage />,
-      },
-      {
-        path: "/cart",
-        element: <CartList />,
-      },
-      {
-        path: "/productListing",
-        element: <ProductListing />,
-      },
-      
-      {
-        path: "/checkout",
-        element: <Checkout />,
-      },
-      {
-        path: "/wishlist",
-        element: <Wishlist />,
-      },
-      {
-        path: "/profile",
-        element: <Profile />,
-      },
-      {
-        path: "/orders",
-        element: <Orders />,
-      },
-      {
-        path: "trackOrder",
-        element: <TrackOrderPage />,
-      },
+      { path: "/", element: <HomePage /> },
+      { path: "/cart", element: <CartList /> },
+      { path: "/productListing", element: <ProductListing /> },
+      { path: "/checkout", element: <Checkout /> },
+      { path: "/wishlist", element: <Wishlist /> },
+      { path: "/profile", element: <Profile /> },
+      { path: "/orders", element: <Orders /> },
+      { path: "/trackOrder", element: <TrackOrderPage /> },
     ],
   },
 ]);
 
 function App() {
-  return <RouterProvider router={router} />;
+  return (
+    // ✅ Wrap your router with CartProvider
+    <CartProvider>
+      <WishlistProvider>
+        <RouterProvider router={router} />
+      </WishlistProvider>
+    </CartProvider>
+  );
 }
 
 export default App;
