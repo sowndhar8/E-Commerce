@@ -11,7 +11,7 @@ function OrdersPage() {
   };
 
   return (
-    <div className="max-w-7xl mx-auto p-6">
+    <div className="min-h-screen bg-gray-50 py-10 px-4 sm:px-6 md:px-20 lg:px-35">
       <h1 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-8">
         My Orders
       </h1>

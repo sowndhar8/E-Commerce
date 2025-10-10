@@ -31,7 +31,7 @@ const TrackOrderPage = () => {
       </Button>
 
       <Card title={`Track Order - ID: ${selectedOrder.id}`} className="shadow-md">
-        <Steps current={currentStep} size="small" className="mb-6">
+        <Steps current={currentStep} size="small" className="!mb-6">
           {selectedOrder.trackingSteps.map((step, index) => (
             <Step
               key={index}

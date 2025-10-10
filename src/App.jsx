@@ -10,7 +10,7 @@ import Profile from "./pages/ProfilePage";
 import Orders from "./pages/OrdersPage";
 import ProductListing from "./pages/ProductListing";
 import TrackOrderPage from "./pages/TrackOrderPage";
-import { CartProvider } from "./context/CartContext"; // ✅ Import
+import { CartProvider } from "./context/CartContext"; 
 import { WishlistProvider } from "./context/WishlistContext";
 
 function Layout() {

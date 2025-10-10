@@ -13,7 +13,7 @@ function WishListPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 py-10 px-4 sm:px-6 md:px-10">
+    <div className="min-h-screen bg-gray-50 py-10 px-4 sm:px-6 md:px-20 lg:px-35">
       <button
         onClick={() => window.history.back()}
         className="flex items-center text-gray-600 mb-6 hover:text-blue-600 transition"

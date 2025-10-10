@@ -10,7 +10,7 @@ function CartPage() {
   );
 
   return (
-    <div className="min-h-screen bg-gray-50 p-4 sm:p-6 md:p-10">
+    <div className="min-h-screen bg-gray-50 py-10 px-4 sm:px-6 md:px-20 lg:px-35">
       {/* Back Button */}
       <button
         onClick={() => window.history.back()}
@@ -119,7 +119,7 @@ function CartPage() {
                 <span>₹{cartTotal.toLocaleString()}</span>
               </div>
 
-              <button className="w-full mt-6 sm:mt-8 bg-blue-600 text-white py-3 sm:py-4 rounded-2xl hover:bg-blue-700 transition font-semibold text-base sm:text-lg">
+              <button onClick={() => (window.location.href = "/checkout")} className="w-full mt-6 sm:mt-8 bg-blue-600 text-white py-3 sm:py-4 rounded-2xl hover:bg-blue-700 transition font-semibold text-base sm:text-lg">
                 Proceed to Checkout
               </button>
               <button
